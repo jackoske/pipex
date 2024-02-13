@@ -1,0 +1,12 @@
+printf.pdf
+*.o
+*.a
+test_exec
+test_ft_printf.c
+test_ft_printf
+README.md
+/examples
+/.vscode
+pft/
+francinette
+printf.pdf
