@@ -1,8 +1,12 @@
 # Compiler
 CC = cc
 
+#adding GNL 
+GNL = get_next_line.c get_next_line_utils.c
+SRC_GNL = $(addprefix lib/gnl/, $(GNL))
+
 # Source file
-SRC = pipex.c utils.c
+SRC = pipex.c utils.c $(SRC_GNL)
 
 # Output file
 NAME = pipex
@@ -14,6 +18,8 @@ WFLAGS =   # -Wall -Wextra -Werror
 LIBFTPRINTF_A = libftprintf.a
 LIBFTPRINTF_DIR = lib/libftprint/
 LIBFTPRINTF  = $(addprefix $(LIBFTPRINTF_DIR), $(LIBFTPRINTF_A))
+
+
 
 
 NONE='\033[0m'

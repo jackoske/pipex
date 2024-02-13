@@ -6,7 +6,7 @@
 /*   By: Jskehan <jskehan@student.42Berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 12:16:17 by Jskehan           #+#    #+#             */
-/*   Updated: 2024/01/11 18:20:10 by Jskehan          ###   ########.fr       */
+/*   Updated: 2024/02/13 13:46:38 by Jskehan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,4 +31,4 @@ size_t	ft_strlcat(char *dst, const char *src, size_t size);
 char	*ft_strjoin_free(char *s1, char *s2);
 char	*get_next_line(int fd);
 
-#endif /* PUSH_SWAP_H */
+#endif 

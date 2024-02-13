@@ -3,130 +3,120 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Jskehan <jskehan@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: Jskehan <jskehan@student.42Berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/08 13:09:30 by Jskehan           #+#    #+#             */
-/*   Updated: 2024/02/12 12:52:47 by Jskehan          ###   ########.fr       */
+/*   Created: 2024/02/13 13:20:50 by Jskehan           #+#    #+#             */
+/*   Updated: 2024/02/13 14:56:03 by Jskehan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void	child(char **argv, char **envp, t_pipex *pipex)
+void	execute_command(char *cmd, char **envp)
 {
-	int		status;
+	char	**s_cmd;
+	char	*path;
+	int		i;
+	
+	i = 0;
+	printf("Executing command: %s\n", cmd);
+	s_cmd = ft_split(cmd, ' ');
+	path = find_command_path(s_cmd[0], envp);
+	if (execve(path, s_cmd, envp) == -1)
+	{
+		ft_putstr_fd("pipex: command not found: ", 2);
+		ft_putendl_fd(s_cmd[0], 2);
+		free_string_array(s_cmd);
+		exit(EXIT_FAILURE);
+	}
+}
+
+void	process_here_doc_input(char **argv, int *p_fd)
+{
+	char	*ret;
+
+	close(p_fd[0]);
+	while (1)
+	{
+		ret = get_next_line(0);
+		if (ft_strncmp(ret, argv[2], ft_strlen(argv[2])) == 0)
+		{
+			free(ret);
+			exit(EXIT_FAILURE);
+		}
+		ft_putstr_fd(ret, p_fd[1]);
+		free(ret);
+	}
+}
+
+void	setup_here_doc(char **argv)
+{
+	int		p_fd[2];
 	pid_t	pid;
 
-	pid = fork();
-	if (pid < 0)
-	{
-		perror("fork");
+	if (pipe(p_fd) == -1)
 		exit(EXIT_FAILURE);
-	}
-	if (pid > 0)
-	{
-		waitpid(pid, &status, 0);
-		close(pipex->out_fd);
-	}
+	pid = fork();
+	if (pid == -1)
+		exit(EXIT_FAILURE);
+	if (!pid)
+		process_here_doc_input(argv, p_fd);
 	else
 	{
-		dup2(pipex->out_fd, STDOUT_FILENO);
-		close(pipex->out_fd);
-		dup2(pipex->in_fd, STDIN_FILENO);
-		close(pipex->in_fd);
-		execve(pipex->cmd_paths[1], pipex->cmd_args[1], envp);
-		perror("execve");
-		exit(EXIT_FAILURE);
+		close(p_fd[1]);
+		dup2(p_fd[0], 0);
+		wait(NULL);
 	}
 }
 
-void	parent(char **argv, char **envp, t_pipex *pipex)
+void	create_and_exec_pipe_process(char *cmd, char **envp)
 {
-	int		status;
 	pid_t	pid;
+	int		p_fd[2];
 
+	if (pipe(p_fd) == -1)
+		exit(EXIT_FAILURE);
 	pid = fork();
-	if (pid < 0)
-	{
-		perror("fork");
+	if (pid == -1)
 		exit(EXIT_FAILURE);
-	}
-	if (pid > 0)
+	if (!pid)
 	{
-		waitpid(pid, &status, 0);
-		close(pipex->in_fd);
+		close(p_fd[0]);
+		dup2(p_fd[1], 1);
+		execute_command(cmd, envp);
 	}
 	else
 	{
-		dup2(pipex->in_fd, STDIN_FILENO);
-		close(pipex->in_fd);
-		dup2(pipex->out_fd, STDOUT_FILENO);
-		close(pipex->out_fd);
-		execve(pipex->cmd_paths[0], pipex->cmd_args[0], envp);
-		perror("execve");
-		exit(EXIT_FAILURE);
-	}
-}
-
-void	init_pipex(t_pipex *pipex)
-{
-	pipex->in_fd = 0;
-	pipex->out_fd = 0;
-	pipex->here_doc = 0;
-	pipex->is_invalid_infile = 0;
-	pipex->cmd_paths = NULL;
-	pipex->cmd_args = NULL;
-	pipex->cmd_count = 0;
-}
-
-void	ft_check_args(int argc, char **argv, t_pipex *pipex)
-{
-	if (argc < 5)
-	{
-		ft_putstr_fd("Error: Invalid number of arguments.\n", STDERR_FILENO);
-		exit(EXIT_FAILURE);
-	}
-	if (strcmp(argv[1], "here_doc") == 0)
-	{
-		pipex->here_doc = 1;
-	}
-	else
-	{
-		if (access(argv[1], F_OK) == -1)
-		{
-			ft_putstr_fd("Error: I file does not exist.\n", STDERR_FILENO);
-			exit(EXIT_FAILURE);
-		}
-		if (access(argv[1], R_OK) == -1)
-		{
-			ft_putstr_fd("Error: I file is not readable.\n", STDERR_FILENO);
-			exit(EXIT_FAILURE);
-		}
-		if (access(argv[argc - 1], F_OK) == -1)
-		{
-			ft_putstr_fd("Error: O file does not exist.\n", STDERR_FILENO);
-			exit(EXIT_FAILURE);
-		}
-		if (access(argv[argc - 1], W_OK) == -1)
-		{
-			ft_putstr_fd("Error: O file is not writable.\n", STDERR_FILENO);
-			exit(EXIT_FAILURE);
-		}
+		close(p_fd[1]);
+		dup2(p_fd[0], 0);
 	}
 }
 
 int	main(int argc, char **argv, char **envp)
 {
-	t_pipex	pipex;
-	char	*args[3];
-	char	**allpath;
 	int		i;
+	int		fd_in;
+	int		fd_out;
 
-	i = -1;
-	init_pipex(&pipex);
-	ft_check_args(argc, argv, &pipex);
-	allpath = ft_split(my_getenv("PATH", envp), ':');
-	while (allpath[++i])
-		ft_printf("%s \n", allpath[i]);
-	return (0);
+	if (argc < 5)
+		print_usage_and_exit(1);
+	if (ft_strcmp(argv[1], "here_doc") == 0)
+	{
+		if (argc < 6)
+			print_usage_and_exit(1);
+		i = 3;
+		fd_out = open_file_with_mode(argv[argc - 1], 2);
+		setup_here_doc(argv);
+	}
+	else
+	{
+		i = 2;
+		fd_in = open_file_with_mode(argv[1], 0);
+		fd_out = open_file_with_mode(argv[argc - 1], 1);
+		dup2(fd_in, 0);
+	}
+	while (i < argc - 2)
+		create_and_exec_pipe_process(argv[i++], envp);
+	dup2(fd_out, 1);
+	execute_command(argv[argc - 2], envp);
 }

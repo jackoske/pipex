@@ -3,14 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Jskehan <jskehan@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: Jskehan <jskehan@student.42Berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 12:57:11 by Jskehan           #+#    #+#             */
-/*   Updated: 2024/02/12 12:16:43 by Jskehan          ###   ########.fr       */
+/*   Updated: 2024/02/13 13:59:28 by Jskehan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#ifndef PIPEX_H
+# define PIPEX_H
+
 #include "lib/libftprint/ft_printf.h"
+# include "lib/gnl/get_next_line.h"
 #include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -29,5 +33,11 @@ typedef struct s_pipex
 	int		cmd_count;
 }			t_pipex;
 
+void	print_usage_and_exit(int n_exit);
+int		open_file_with_mode(char *file, int n);
+char	*get_env_variable(char *name, char **env);
+char	*find_command_path(char *cmd, char **env);
+void	exec(char *cmd, char **env);
+void	free_string_array(char **tab);
 
-char	*my_getenv(char *name, char **env);
+#endif
