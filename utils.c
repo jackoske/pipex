@@ -6,7 +6,7 @@
 /*   By: Jskehan <jskehan@student.42Berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 13:20:58 by Jskehan           #+#    #+#             */
-/*   Updated: 2024/02/13 14:53:05 by Jskehan          ###   ########.fr       */
+/*   Updated: 2024/03/27 16:24:35 by Jskehan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	print_usage_and_exit(int n_exit)
 {
 	if (n_exit == 1)
-		ft_putstr_fd("./pipex infile cmd cmd outfile\n", 2);
+		ft_putstr_fd("./pipex infile cmd cmd.... outfile\n", 2);
 	exit(EXIT_FAILURE);
 }
 

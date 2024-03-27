@@ -6,7 +6,7 @@
 /*   By: Jskehan <jskehan@student.42Berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 13:20:50 by Jskehan           #+#    #+#             */
-/*   Updated: 2024/02/13 14:56:03 by Jskehan          ###   ########.fr       */
+/*   Updated: 2024/03/26 19:08:26 by Jskehan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	execute_command(char *cmd, char **envp)
 	char	**s_cmd;
 	char	*path;
 	int		i;
-	
+
 	i = 0;
 	printf("Executing command: %s\n", cmd);
 	s_cmd = ft_split(cmd, ' ');
@@ -94,9 +94,9 @@ void	create_and_exec_pipe_process(char *cmd, char **envp)
 
 int	main(int argc, char **argv, char **envp)
 {
-	int		i;
-	int		fd_in;
-	int		fd_out;
+	int	i;
+	int	fd_in;
+	int	fd_out;
 
 	if (argc < 5)
 		print_usage_and_exit(1);
