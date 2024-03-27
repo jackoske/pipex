@@ -6,21 +6,57 @@
 /*   By: Jskehan <jskehan@student.42Berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 13:20:50 by Jskehan           #+#    #+#             */
-/*   Updated: 2024/03/26 19:08:26 by Jskehan          ###   ########.fr       */
+/*   Updated: 2024/03/27 17:44:57 by Jskehan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+#include <ctype.h>
+
+char **split_command(const char *cmd) {
+    char **result = NULL;
+    int count = 0;
+    int capacity = 10;
+    char buffer[256];
+    int buf_index = 0;
+    char quote_char = '\0';
+
+    result = malloc(capacity * sizeof(char *));
+    if (!result) return NULL;
+
+    while (1) {
+        char c = *cmd++;
+        if ((c == ' ' && quote_char == '\0') || c == '\0') {
+            if (buf_index != 0) {
+                buffer[buf_index] = '\0';
+                if (count == capacity) {
+                    capacity *= 2;
+                    result = realloc(result, capacity * sizeof(char *));
+                    if (!result) return NULL;
+                }
+                result[count++] = strdup(buffer);
+                buf_index = 0;
+            }
+            if (c == '\0') break;
+        } else if (c == '"' || c == '\'') {
+            if (quote_char == '\0') quote_char = c;
+            else if (quote_char == c) quote_char = '\0';
+        } else if (!isspace(c) || quote_char != '\0') {
+            buffer[buf_index++] = c;
+        }
+    }
+
+    result[count] = NULL;
+    return result;
+}
 
 void	execute_command(char *cmd, char **envp)
 {
 	char	**s_cmd;
 	char	*path;
-	int		i;
 
-	i = 0;
 	printf("Executing command: %s\n", cmd);
-	s_cmd = ft_split(cmd, ' ');
+	s_cmd = split_command(cmd);
 	path = find_command_path(s_cmd[0], envp);
 	if (execve(path, s_cmd, envp) == -1)
 	{
@@ -75,10 +111,16 @@ void	create_and_exec_pipe_process(char *cmd, char **envp)
 	int		p_fd[2];
 
 	if (pipe(p_fd) == -1)
+	{
+		perror("pipe failed");
 		exit(EXIT_FAILURE);
+	}
 	pid = fork();
 	if (pid == -1)
+	{
+		perror("fork failed");
 		exit(EXIT_FAILURE);
+	}
 	if (!pid)
 	{
 		close(p_fd[0]);
@@ -91,6 +133,24 @@ void	create_and_exec_pipe_process(char *cmd, char **envp)
 		dup2(p_fd[0], 0);
 	}
 }
+void	ft_check_args(int argc, char **argv)
+{
+	if (argc < 5)
+	{
+		perror("pipex: too few arguments");
+		exit(EXIT_FAILURE);
+	}
+	else if (access(argv[1], F_OK) == -1)
+	{
+		perror("pipex: input file");
+		exit(EXIT_FAILURE);
+	}
+	else if (access(argv[1], R_OK) == -1)
+	{
+		perror("pipex: cannot read input file");
+		exit(EXIT_FAILURE);
+	}
+}
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -98,8 +158,7 @@ int	main(int argc, char **argv, char **envp)
 	int	fd_in;
 	int	fd_out;
 
-	if (argc < 5)
-		print_usage_and_exit(1);
+	ft_check_args(argc, argv);
 	if (ft_strcmp(argv[1], "here_doc") == 0)
 	{
 		if (argc < 6)
@@ -119,4 +178,5 @@ int	main(int argc, char **argv, char **envp)
 		create_and_exec_pipe_process(argv[i++], envp);
 	dup2(fd_out, 1);
 	execute_command(argv[argc - 2], envp);
+	return (0);
 }
