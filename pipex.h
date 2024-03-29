@@ -6,7 +6,7 @@
 /*   By: Jskehan <jskehan@student.42Berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 12:57:11 by Jskehan           #+#    #+#             */
-/*   Updated: 2024/03/26 19:08:18 by Jskehan          ###   ########.fr       */
+/*   Updated: 2024/03/29 12:25:48 by Jskehan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "lib/gnl/get_next_line.h"
 # include "lib/libftprint/ft_printf.h"
+# include <ctype.h>
 # include <fcntl.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -39,5 +40,6 @@ char		*get_env_variable(char *name, char **env);
 char		*find_command_path(char *cmd, char **env);
 void		exec(char *cmd, char **env);
 void		free_string_array(char **tab);
+char		**split_command(char *cmd);
 
 #endif

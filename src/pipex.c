@@ -6,56 +6,17 @@
 /*   By: Jskehan <jskehan@student.42Berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 13:20:50 by Jskehan           #+#    #+#             */
-/*   Updated: 2024/03/27 17:44:57 by Jskehan          ###   ########.fr       */
+/*   Updated: 2024/03/29 12:26:04 by Jskehan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
-#include <ctype.h>
-
-char **split_command(const char *cmd) {
-    char **result = NULL;
-    int count = 0;
-    int capacity = 10;
-    char buffer[256];
-    int buf_index = 0;
-    char quote_char = '\0';
-
-    result = malloc(capacity * sizeof(char *));
-    if (!result) return NULL;
-
-    while (1) {
-        char c = *cmd++;
-        if ((c == ' ' && quote_char == '\0') || c == '\0') {
-            if (buf_index != 0) {
-                buffer[buf_index] = '\0';
-                if (count == capacity) {
-                    capacity *= 2;
-                    result = realloc(result, capacity * sizeof(char *));
-                    if (!result) return NULL;
-                }
-                result[count++] = strdup(buffer);
-                buf_index = 0;
-            }
-            if (c == '\0') break;
-        } else if (c == '"' || c == '\'') {
-            if (quote_char == '\0') quote_char = c;
-            else if (quote_char == c) quote_char = '\0';
-        } else if (!isspace(c) || quote_char != '\0') {
-            buffer[buf_index++] = c;
-        }
-    }
-
-    result[count] = NULL;
-    return result;
-}
+#include "../pipex.h"
 
 void	execute_command(char *cmd, char **envp)
 {
 	char	**s_cmd;
 	char	*path;
 
-	printf("Executing command: %s\n", cmd);
 	s_cmd = split_command(cmd);
 	path = find_command_path(s_cmd[0], envp);
 	if (execve(path, s_cmd, envp) == -1)

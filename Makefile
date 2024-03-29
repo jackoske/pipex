@@ -5,8 +5,11 @@ CC = cc
 GNL = get_next_line.c get_next_line_utils.c
 SRC_GNL = $(addprefix lib/gnl/, $(GNL))
 
-# Source file
-SRC = pipex.c utils.c $(SRC_GNL)
+# Source file directory
+SRC_DIR = src/
+
+# Source files (automatically include all .c files from SRC_DIR)
+SRC = $(wildcard $(SRC_DIR)*.c) $(SRC_GNL)
 
 # Output file
 NAME = pipex
@@ -18,9 +21,6 @@ WFLAGS =   # -Wall -Wextra -Werror
 LIBFTPRINTF_A = libftprintf.a
 LIBFTPRINTF_DIR = lib/libftprint/
 LIBFTPRINTF  = $(addprefix $(LIBFTPRINTF_DIR), $(LIBFTPRINTF_A))
-
-
-
 
 NONE='\033[0m'
 GREEN='\033[32m'
@@ -37,7 +37,6 @@ $(NAME): $(SRC)
 	@make -C $(LIBFTPRINTF_DIR) > /dev/null
 	$(CC) $(WFLAGS) -o $(NAME) $(SRC) -L$(LIBFTPRINTF_DIR) -lftprintf -I$(LIBFTPRINTF_DIR)
 	@@echo -e $(CURSIVE)$(GREEN) '     - BUILD SUCCESS!' $(NONE)
-
 
 # Clean the generated files
 clean:

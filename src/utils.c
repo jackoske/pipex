@@ -6,11 +6,11 @@
 /*   By: Jskehan <jskehan@student.42Berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 13:20:58 by Jskehan           #+#    #+#             */
-/*   Updated: 2024/03/27 17:36:48 by Jskehan          ###   ########.fr       */
+/*   Updated: 2024/03/29 11:52:07 by Jskehan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "../pipex.h"
 
 void	print_usage_and_exit(int n_exit)
 {
@@ -21,17 +21,13 @@ void	print_usage_and_exit(int n_exit)
 
 int	open_file_with_mode(char *file, int mode)
 {
-	int	ret;
+	int	fd;
 
-	if (mode == 0)
-		ret = open(file, O_RDONLY, 0666);
-	if (mode == 1)
-		ret = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0666);
-	if (mode == 2)
-		ret = open(file, O_WRONLY | O_CREAT | O_APPEND, 0666);
-	if (ret == -1)
-		exit(EXIT_FAILURE);
-	return (ret);
+	if (access(file, F_OK) != -1)
+		fd = open(file, mode);
+	else
+		fd = open(file, O_WRONLY | O_CREAT, 0644);
+	return (fd);
 }
 
 void	free_string_array(char **tab)
