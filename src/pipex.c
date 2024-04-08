@@ -6,7 +6,7 @@
 /*   By: Jskehan <jskehan@student.42Berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 13:20:50 by Jskehan           #+#    #+#             */
-/*   Updated: 2024/04/03 12:09:54 by Jskehan          ###   ########.fr       */
+/*   Updated: 2024/04/08 16:48:28 by Jskehan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,6 @@ int	main(int argc, char **argv, char **envp)
 	while (i < argc - 2)
 		create_and_exec_pipe_process(argv[i++], envp);
 	dup2(fd_out, 1);
-	execute_command(argv[argc - 2], envp);
+	parse_and_execute_command(argv[argc - 2], envp);
 	return (0);
 }

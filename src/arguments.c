@@ -6,13 +6,13 @@
 /*   By: Jskehan <jskehan@student.42Berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 12:10:17 by Jskehan           #+#    #+#             */
-/*   Updated: 2024/04/03 12:10:25 by Jskehan          ###   ########.fr       */
+/*   Updated: 2024/04/08 16:48:23 by Jskehan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../pipex.h"
 
-void	execute_command(char *cmd, char **envp)
+void	parse_and_execute_command(char *cmd, char **envp)
 {
 	char	**s_cmd;
 	char	*path;
@@ -86,7 +86,7 @@ void	create_and_exec_pipe_process(char *cmd, char **envp)
 	{
 		close(p_fd[0]);
 		dup2(p_fd[1], 1);
-		execute_command(cmd, envp);
+		parse_and_execute_command(cmd, envp);
 	}
 	else
 	{
