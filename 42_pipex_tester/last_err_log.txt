@@ -1,0 +1,40 @@
+[31;1m------------------------------------------------------------------------------------------------------------------------
+test 10:
+[0m[1m./pipex "nonexistingfile" "cat -e" "cat -e" "outfiles/outfile" 
+< nonexistingfile cat -e | cat -e > outfiles/outfile_tester
+
+[0m[31;1moutfiles/outfile:                                               [32;1moutfiles/outfile_tester:[0m
+$$							      <
+
+[31;1m------------------------------------------------------------------------------------------------------------------------
+test 11:
+[0m[1m./pipex "infiles/infile_without_permissions" "cat -e" "cat -e" "outfiles/outfile" 
+< infiles/infile_without_permissions cat -e | cat -e > outfiles/outfile_tester
+
+[0m[31;1moutfiles/outfile:                                               [32;1moutfiles/outfile_tester:[0m
+$$							      <
+
+[31;1m------------------------------------------------------------------------------------------------------------------------
+test 12:
+[0m[1m./pipex "infiles/basic.txt" "cat -e" "cat -e" "outfiles/outfile_without_permissions" 
+< infiles/basic.txt cat -e | cat -e > outfiles/outfile_without_permissions_tester
+
+[0mYour exit status: 0
+Orig exit status: 1
+
+[31;1m------------------------------------------------------------------------------------------------------------------------
+test 14:
+[0m[1m./pipex "infiles/basic.txt" "cat -e" "nonexistingcommand" "outfiles/outfile" 
+< infiles/basic.txt cat -e | nonexistingcommand > outfiles/outfile_tester
+
+[0m==730634== HEAP SUMMARY:
+==730634==     in use at exit: 16 bytes in 1 blocks
+==730634==   total heap usage: 71 allocs, 71 frees, 1,042 bytes allocated
+==730634== 
+==730634== 16 bytes in 1 blocks are definitely lost in loss record 1 of 1
+==730634==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==730634==    by 0x402785: ft_lstnew (in /home/jskehan/Documents/mainCurriculum/pipex_proj/intra-uuid-9429d200-0149-4524-ad7c-74f0090696ac-5485198-jskehan/42_pipex_tester/pipex)
+==730634==    by 0x4016A0: add_part_to_list (in /home/jskehan/Documents/mainCurriculum/pipex_proj/intra-uuid-9429d200-0149-4524-ad7c-74f0090696ac-5485198-jskehan/42_pipex_tester/pipex)
+==730634==    by 0x401662: split_cmd_into_parts (in /home/jskehan/Documents/mainCurriculum/pipex_proj/intra-uuid-9429d200-0149-4524-ad7c-74f0090696ac-5485198-jskehan/42_pipex_tester/pipex)
+==730634==    by 0x4017D8: split_command (in /home/jskehan/Documents/mainCurriculum/pipex_proj/intra-uuid-9429d200-0149-4524-ad7c-74f0090696ac-5485198-jskehan/42_pipex_tester/pipex)
+

@@ -6,7 +6,7 @@
 /*   By: Jskehan <jskehan@student.42Berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 12:57:11 by Jskehan           #+#    #+#             */
-/*   Updated: 2024/04/08 16:49:08 by Jskehan          ###   ########.fr       */
+/*   Updated: 2024/04/09 17:52:58 by Jskehan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,13 @@ typedef struct s_pipex
 	int		cmd_count;
 }			t_pipex;
 
-
 typedef struct s_parser
 {
-    t_list	*parts;
-    char	*part;
-    int		in_single_quotes;
-    int		in_double_quotes;
-}				t_parser;
+	t_list	*parts;
+	char	*part;
+	int		in_single_quotes;
+	int		in_double_quotes;
+}			t_parser;
 
 void		print_usage_and_exit(int n_exit);
 int			open_file_with_mode(char *file, int n);
@@ -55,5 +54,6 @@ void		parse_and_execute_command(char *cmd, char **envp);
 void		setup_here_doc(char **argv);
 void		create_and_exec_pipe_process(char *cmd, char **envp);
 void		ft_check_args(int argc, char **argv);
-char	**split_cmd_into_parts(char *cmd);
+char		**split_cmd_into_parts(char *cmd);
+void		free_parts(t_list *parts);
 #endif

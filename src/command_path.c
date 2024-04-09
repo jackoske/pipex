@@ -6,7 +6,7 @@
 /*   By: Jskehan <jskehan@student.42Berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 11:51:51 by Jskehan           #+#    #+#             */
-/*   Updated: 2024/04/08 16:48:50 by Jskehan          ###   ########.fr       */
+/*   Updated: 2024/04/09 17:32:13 by Jskehan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ void	execute_cmd_with_path(char *path, char **s_cmd, char **envp)
 	{
 		ft_putstr_fd("pipex: command not found: ", 2);
 		ft_putendl_fd(s_cmd[0], 2);
-		free_string_array(s_cmd);
-		exit(EXIT_FAILURE);
+		free(s_cmd);
+		exit(127);
 	}
 }
 

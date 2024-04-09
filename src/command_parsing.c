@@ -6,7 +6,7 @@
 /*   By: Jskehan <jskehan@student.42Berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 16:45:52 by Jskehan           #+#    #+#             */
-/*   Updated: 2024/04/08 16:55:58 by Jskehan          ###   ########.fr       */
+/*   Updated: 2024/04/09 17:53:15 by Jskehan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ char	**split_cmd_into_parts(char *cmd)
 {
 	t_parser	parser;
 	int			i;
+	char		**parts;
 
 	i = -1;
 	initilise_parser(&parser);
@@ -66,5 +67,8 @@ char	**split_cmd_into_parts(char *cmd)
 	}
 	if (ft_strlen(parser.part) > 0)
 		add_part_to_list(&parser.parts, parser.part);
+	parts = ft_lsttoarr(parser.parts);
+	free_parts(parser.parts);
+	free(parser.part);
 	return (ft_lsttoarr(parser.parts));
 }

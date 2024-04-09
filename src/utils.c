@@ -6,7 +6,7 @@
 /*   By: Jskehan <jskehan@student.42Berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 13:20:58 by Jskehan           #+#    #+#             */
-/*   Updated: 2024/04/08 16:48:31 by Jskehan          ###   ########.fr       */
+/*   Updated: 2024/04/09 17:33:29 by Jskehan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,6 @@ int	open_file_with_mode(char *file, int mode)
 		ret = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0666);
 	if (mode == 2)
 		ret = open(file, O_WRONLY | O_CREAT | O_APPEND, 0666);
-	if (ret == -1)
-		exit(EXIT_FAILURE);
 	return (ret);
 }
 
@@ -39,12 +37,13 @@ void	free_string_array(char **tab)
 	size_t	i;
 
 	i = 0;
-	while (tab[i])
+	while (tab[i] != NULL)
 	{
 		free(tab[i]);
 		i++;
 	}
-	free(tab);
+	if (tab)
+		free(tab);
 }
 
 char	*get_env_variable(char *name, char **env)
