@@ -6,7 +6,7 @@
 /*   By: Jskehan <jskehan@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 12:57:11 by Jskehan           #+#    #+#             */
-/*   Updated: 2024/04/11 00:32:33 by Jskehan          ###   ########.fr       */
+/*   Updated: 2024/04/11 00:46:07 by Jskehan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ typedef struct s_parser
 }			t_parser;
 
 // Command parsing
-void		process_character(char c, t_parser *parser);
 char		**split_cmd_into_parts(char *cmd);
 size_t		count_words(char *str, char c);
 
