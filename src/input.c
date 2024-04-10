@@ -6,7 +6,7 @@
 /*   By: Jskehan <jskehan@student.42Berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 16:53:39 by Jskehan           #+#    #+#             */
-/*   Updated: 2024/04/10 17:16:28 by Jskehan          ###   ########.fr       */
+/*   Updated: 2024/04/10 20:43:48 by Jskehan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,16 +50,16 @@ void	setup_here_doc(char **argv)
 	}
 }
 
-void handle_here_doc(int argc, char **argv, int *fd)
+void	handle_here_doc(int argc, char **argv, int *fd)
 {
 	fd[OUT] = open_file_with_mode(argv[argc - 1], 2);
 	setup_here_doc(argv);
 }
 
-void handle_reg_input(int argc, char **argv, int *fd, int *p_fd)
+void	handle_reg_input(int argc, char **argv, int *fd, int *p_fd)
 {
 	int	i;
-	
+
 	i = 2;
 	fd[IN] = open_file_with_mode(argv[1], 0);
 	if (fd[IN] == -1)

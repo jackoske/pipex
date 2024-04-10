@@ -6,7 +6,7 @@
 /*   By: Jskehan <jskehan@student.42Berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 13:20:58 by Jskehan           #+#    #+#             */
-/*   Updated: 2024/04/10 17:18:07 by Jskehan          ###   ########.fr       */
+/*   Updated: 2024/04/10 20:46:12 by Jskehan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,4 +82,25 @@ char	*find_command_path(char *cmd, char **env)
 	}
 	free_string_array(allpath);
 	return (cmd);
+}
+
+size_t	count_words(char *s, char c)
+{
+	size_t	count;
+	size_t	i;
+
+	count = 0;
+	i = 0;
+	while (s[i])
+	{
+		if ((s[i]) != c)
+		{
+			count++;
+			while (s[i] && s[i] != c)
+				i++;
+		}
+		else if (s[i] == c)
+			i++;
+	}
+	return (count);
 }

@@ -6,7 +6,7 @@
 /*   By: Jskehan <jskehan@student.42Berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 12:10:17 by Jskehan           #+#    #+#             */
-/*   Updated: 2024/04/10 17:18:01 by Jskehan          ###   ########.fr       */
+/*   Updated: 2024/04/10 20:44:07 by Jskehan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,5 +32,4 @@ void	ft_check_args(int argc, char **argv)
 		ft_putstr_fd(strerror(errno), 2);
 		ft_putstr_fd("\n", 2);
 	}
-	
 }

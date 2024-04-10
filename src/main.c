@@ -6,7 +6,7 @@
 /*   By: Jskehan <jskehan@student.42Berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 13:20:50 by Jskehan           #+#    #+#             */
-/*   Updated: 2024/04/10 17:36:29 by Jskehan          ###   ########.fr       */
+/*   Updated: 2024/04/10 20:43:45 by Jskehan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	main(int argc, char **argv, char **envp)
 {
 	int	i;
 	int	fd[2];
-	int p_fd[2];
+	int	p_fd[2];
 
 	i = 1;
 	ft_check_args(argc, argv);

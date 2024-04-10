@@ -6,7 +6,7 @@
 /*   By: Jskehan <jskehan@student.42Berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 12:57:11 by Jskehan           #+#    #+#             */
-/*   Updated: 2024/04/10 17:32:09 by Jskehan          ###   ########.fr       */
+/*   Updated: 2024/04/10 20:34:09 by Jskehan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ char		*find_command_path(char *cmd, char **env);
 void		free_string_array(char **tab);
 char		**split_command(char *cmd, char **envp);
 void		ft_check_args(int argc, char **argv);
-
+size_t		count_words(char *str, char c);
 // Command execution and processing
 void		exec(char *cmd, char **env);
 int			parse_and_execute_command(char *cmd, char **envp);
