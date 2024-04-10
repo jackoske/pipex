@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Jskehan <jskehan@student.42Berlin.de>      +#+  +:+       +#+        */
+/*   By: Jskehan <jskehan@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 16:53:39 by Jskehan           #+#    #+#             */
-/*   Updated: 2024/04/10 20:43:48 by Jskehan          ###   ########.fr       */
+/*   Updated: 2024/04/10 22:22:14 by Jskehan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,6 @@ void	handle_here_doc(int argc, char **argv, int *fd)
 
 void	handle_reg_input(int argc, char **argv, int *fd, int *p_fd)
 {
-	int	i;
-
-	i = 2;
 	fd[IN] = open_file_with_mode(argv[1], 0);
 	if (fd[IN] == -1)
 	{

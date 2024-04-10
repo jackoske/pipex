@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lsttoarr.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Jskehan <jskehan@student.42Berlin.de>      +#+  +:+       +#+        */
+/*   By: Jskehan <jskehan@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 15:21:14 by Jskehan           #+#    #+#             */
-/*   Updated: 2024/04/08 15:27:01 by Jskehan          ###   ########.fr       */
+/*   Updated: 2024/04/11 00:08:45 by Jskehan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,13 @@ char	**ft_lsttoarr(t_list *lst)
 	arr = malloc((size + 1) * sizeof(char *));
 	if (!arr)
 		return (NULL);
-	while (++i < size)
+	i = 0;
+	while (lst)
 	{
-		arr[i] = lst->content;
+		arr[i] = ft_strdup(lst->content);
 		lst = lst->next;
+		i++;
 	}
-	arr[size] = NULL;
+	arr[i] = NULL;
 	return (arr);
 }

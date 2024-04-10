@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validation.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Jskehan <jskehan@student.42Berlin.de>      +#+  +:+       +#+        */
+/*   By: Jskehan <jskehan@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 12:10:17 by Jskehan           #+#    #+#             */
-/*   Updated: 2024/04/10 20:44:07 by Jskehan          ###   ########.fr       */
+/*   Updated: 2024/04/10 22:24:33 by Jskehan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	ft_check_args(int argc, char **argv)
 {
-	if ((argc < 5) || 
-		(ft_strcmp(argv[1], "here_doc") == 0 && argc < 6))
+	if ((argc < 5)
+		|| (ft_strcmp(argv[1], "here_doc") == 0 && argc < 6))
 	{
 		ft_putstr_fd("pipex: too few arguments\n", 2);
 		exit(EXIT_FAILURE);

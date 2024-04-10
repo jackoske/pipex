@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Jskehan <jskehan@student.42Berlin.de>      +#+  +:+       +#+        */
+/*   By: Jskehan <jskehan@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 12:57:11 by Jskehan           #+#    #+#             */
-/*   Updated: 2024/04/10 20:34:09 by Jskehan          ###   ########.fr       */
+/*   Updated: 2024/04/11 00:32:33 by Jskehan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,13 @@ typedef enum e_fd
 	OUT
 }			t_fd;
 
+typedef enum e_cmd_string
+{
+	PARTS,
+	SINGLE_QUOTES,
+	DOUBLE_QUOTES
+}			t_cmd_string;
+
 typedef struct s_pipex
 {
 	int		in_fd;
@@ -49,6 +56,20 @@ typedef struct s_parser
 	int		in_double_quotes;
 }			t_parser;
 
+// Command parsing
+void		process_character(char c, t_parser *parser);
+char		**split_cmd_into_parts(char *cmd);
+size_t		count_words(char *str, char c);
+
+// Command execution
+void		exec(char *cmd, char **env);
+int			parse_and_execute_command(char *cmd, char **envp);
+void		pipe_process(char *cmds, char **envp);
+
+// Input handling
+void		handle_here_doc(int argc, char **argv, int *fd);
+void		handle_reg_input(int argc, char **argv, int *fd, int *p_fd);
+
 // Utility functions
 void		print_usage_and_exit(int n_exit);
 int			open_file_with_mode(char *file, int n);
@@ -57,15 +78,5 @@ char		*find_command_path(char *cmd, char **env);
 void		free_string_array(char **tab);
 char		**split_command(char *cmd, char **envp);
 void		ft_check_args(int argc, char **argv);
-size_t		count_words(char *str, char c);
-// Command execution and processing
-void		exec(char *cmd, char **env);
-int			parse_and_execute_command(char *cmd, char **envp);
-void		handle_here_doc(int argc, char **argv, int *fd);
-void		handle_reg_input(int argc, char **argv, int *fd, int *p_fd);
-void		pipe_process(char *cmds, char **envp);
-
-// Command parsing and manipulation
-char		**split_cmd_into_parts(char *cmd);
 
 #endif
