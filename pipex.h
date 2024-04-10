@@ -6,7 +6,7 @@
 /*   By: Jskehan <jskehan@student.42Berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 12:57:11 by Jskehan           #+#    #+#             */
-/*   Updated: 2024/03/26 19:08:18 by Jskehan          ###   ########.fr       */
+/*   Updated: 2024/04/10 17:32:09 by Jskehan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,20 @@
 
 # include "lib/gnl/get_next_line.h"
 # include "lib/libftprint/ft_printf.h"
+# include <ctype.h>
+# include <errno.h>
 # include <fcntl.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
 # include <sys/wait.h>
 # include <unistd.h>
+
+typedef enum e_fd
+{
+	IN,
+	OUT
+}			t_fd;
 
 typedef struct s_pipex
 {
@@ -33,11 +41,31 @@ typedef struct s_pipex
 	int		cmd_count;
 }			t_pipex;
 
+typedef struct s_parser
+{
+	t_list	*parts;
+	char	*part;
+	int		in_single_quotes;
+	int		in_double_quotes;
+}			t_parser;
+
+// Utility functions
 void		print_usage_and_exit(int n_exit);
 int			open_file_with_mode(char *file, int n);
 char		*get_env_variable(char *name, char **env);
 char		*find_command_path(char *cmd, char **env);
-void		exec(char *cmd, char **env);
 void		free_string_array(char **tab);
+char		**split_command(char *cmd, char **envp);
+void		ft_check_args(int argc, char **argv);
+
+// Command execution and processing
+void		exec(char *cmd, char **env);
+int			parse_and_execute_command(char *cmd, char **envp);
+void		handle_here_doc(int argc, char **argv, int *fd);
+void		handle_reg_input(int argc, char **argv, int *fd, int *p_fd);
+void		pipe_process(char *cmds, char **envp);
+
+// Command parsing and manipulation
+char		**split_cmd_into_parts(char *cmd);
 
 #endif

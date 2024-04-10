@@ -6,18 +6,11 @@
 /*   By: Jskehan <jskehan@student.42Berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 13:20:58 by Jskehan           #+#    #+#             */
-/*   Updated: 2024/03/27 17:36:48 by Jskehan          ###   ########.fr       */
+/*   Updated: 2024/04/10 17:18:07 by Jskehan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
-
-void	print_usage_and_exit(int n_exit)
-{
-	if (n_exit == 1)
-		ft_putstr_fd("./pipex infile cmd cmd.... outfile\n", 2);
-	exit(EXIT_FAILURE);
-}
+#include "../pipex.h"
 
 int	open_file_with_mode(char *file, int mode)
 {
@@ -29,8 +22,6 @@ int	open_file_with_mode(char *file, int mode)
 		ret = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0666);
 	if (mode == 2)
 		ret = open(file, O_WRONLY | O_CREAT | O_APPEND, 0666);
-	if (ret == -1)
-		exit(EXIT_FAILURE);
 	return (ret);
 }
 
