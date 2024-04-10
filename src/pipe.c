@@ -6,7 +6,7 @@
 /*   By: Jskehan <jskehan@student.42Berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 15:22:57 by Jskehan           #+#    #+#             */
-/*   Updated: 2024/04/10 21:21:07 by Jskehan          ###   ########.fr       */
+/*   Updated: 2024/04/10 21:26:40 by Jskehan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ void	execute_parent_process(int *p_fd, pid_t pid, char *cmd)
 
 	close(p_fd[1]);
 	dup2(p_fd[0], 0);
-	perror(cmd);
 	if (ft_strncmp(cmd, "sleep", 5) == 0)
 		waitpid(pid, &status, 0);
 }
