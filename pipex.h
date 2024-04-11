@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Jskehan <jskehan@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: Jskehan <jskehan@student.42Berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 12:57:11 by Jskehan           #+#    #+#             */
-/*   Updated: 2024/04/11 00:46:07 by Jskehan          ###   ########.fr       */
+/*   Updated: 2024/04/11 11:36:07 by Jskehan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,11 +63,11 @@ size_t		count_words(char *str, char c);
 // Command execution
 void		exec(char *cmd, char **env);
 int			parse_and_execute_command(char *cmd, char **envp);
-void		pipe_process(char *cmds, char **envp);
+void		pipe_process(char **argv, int argc, char **envp);
 
 // Input handling
-void		handle_here_doc(int argc, char **argv, int *fd);
-void		handle_reg_input(int argc, char **argv, int *fd, int *p_fd);
+void		handle_here_doc(char **argv, int *fd);
+void		handle_reg_input(char **argv, int *fd);
 
 // Utility functions
 void		print_usage_and_exit(int n_exit);

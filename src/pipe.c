@@ -6,7 +6,7 @@
 /*   By: Jskehan <jskehan@student.42Berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 15:22:57 by Jskehan           #+#    #+#             */
-/*   Updated: 2024/04/10 21:26:40 by Jskehan          ###   ########.fr       */
+/*   Updated: 2024/04/11 11:12:15 by Jskehan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,25 +44,39 @@ void	execute_child_process(int *p_fd, char *cmd, char **envp)
 	exit(ret);
 }
 
-void	execute_parent_process(int *p_fd, pid_t pid, char *cmd)
+void	execute_parent_process(int *p_fd)
 {
-	int	status;
-
 	close(p_fd[1]);
 	dup2(p_fd[0], 0);
-	if (ft_strncmp(cmd, "sleep", 5) == 0)
-		waitpid(pid, &status, 0);
 }
 
-void	pipe_process(char *cmd, char **envp)
+void	pipe_process(char **argv, int argc, char **envp)
 {
-	pid_t	pid;
+	pid_t	*pids;
+	int		i;
 	int		p_fd[2];
 
-	create_pipe(p_fd);
-	pid = fork_process();
-	if (!pid)
-		execute_child_process(p_fd, cmd, envp);
-	else
-		execute_parent_process(p_fd, pid, cmd);
+	pids = malloc((argc - 3) * sizeof(pid_t));
+	if (!pids)
+	{
+		ft_putstr_fd(strerror(errno), 2);
+		exit(EXIT_FAILURE);
+	}
+	i = 2;
+	while (++i < argc - 2)
+	{
+		create_pipe(p_fd);
+		pids[i - 1] = fork_process();
+		if (!pids[i - 1])
+		{
+			execute_child_process(p_fd, argv[i], envp);
+			exit(EXIT_FAILURE);
+		}
+		else
+			close(p_fd[1]);
+	}
+	i = 0;
+	while (++i < argc - 2)
+		waitpid(pids[i - 1], NULL, 0);
+	free(pids);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validation.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Jskehan <jskehan@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: Jskehan <jskehan@student.42Berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 12:10:17 by Jskehan           #+#    #+#             */
-/*   Updated: 2024/04/10 22:24:33 by Jskehan          ###   ########.fr       */
+/*   Updated: 2024/04/11 10:06:38 by Jskehan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,5 @@ void	ft_check_args(int argc, char **argv)
 	{
 		ft_putstr_fd("pipex: too few arguments\n", 2);
 		exit(EXIT_FAILURE);
-	}
-	else if (access(argv[1], F_OK) == -1)
-	{
-		ft_putstr_fd("pipex: ", 2);
-		ft_putstr_fd(strerror(errno), 2);
-		ft_putstr_fd("\n", 2);
-	}
-	else if (access(argv[1], R_OK) == -1)
-	{
-		ft_putstr_fd("pipex: ", 2);
-		ft_putstr_fd(strerror(errno), 2);
-		ft_putstr_fd("\n", 2);
 	}
 }
