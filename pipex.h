@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Jskehan <jskehan@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: Jskehan <jskehan@student.42Berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/08 12:57:11 by Jskehan           #+#    #+#             */
-/*   Updated: 2024/04/11 00:32:33 by Jskehan          ###   ########.fr       */
+/*   Created: 2024/04/11 11:59:37 by Jskehan           #+#    #+#             */
+/*   Updated: 2024/04/25 11:28:15 by Jskehan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,30 +24,6 @@
 # include <sys/wait.h>
 # include <unistd.h>
 
-typedef enum e_fd
-{
-	IN,
-	OUT
-}			t_fd;
-
-typedef enum e_cmd_string
-{
-	PARTS,
-	SINGLE_QUOTES,
-	DOUBLE_QUOTES
-}			t_cmd_string;
-
-typedef struct s_pipex
-{
-	int		in_fd;
-	int		out_fd;
-	int		here_doc;
-	int		is_invalid_infile;
-	char	**cmd_paths;
-	char	***cmd_args;
-	int		cmd_count;
-}			t_pipex;
-
 typedef struct s_parser
 {
 	t_list	*parts;
@@ -56,27 +32,18 @@ typedef struct s_parser
 	int		in_double_quotes;
 }			t_parser;
 
-// Command parsing
-void		process_character(char c, t_parser *parser);
+void		exit_handler(int n_exit);
+int			open_file(char *file, int n);
+char		*my_getenv(char *name, char **env);
 char		**split_cmd_into_parts(char *cmd);
-size_t		count_words(char *str, char c);
-
-// Command execution
+char		*get_path(char *cmd, char **env);
 void		exec(char *cmd, char **env);
-int			parse_and_execute_command(char *cmd, char **envp);
-void		pipe_process(char *cmds, char **envp);
-
-// Input handling
-void		handle_here_doc(int argc, char **argv, int *fd);
-void		handle_reg_input(int argc, char **argv, int *fd, int *p_fd);
-
-// Utility functions
-void		print_usage_and_exit(int n_exit);
-int			open_file_with_mode(char *file, int n);
-char		*get_env_variable(char *name, char **env);
-char		*find_command_path(char *cmd, char **env);
-void		free_string_array(char **tab);
-char		**split_command(char *cmd, char **envp);
+void		ft_free_tab(char **tab);
+void		handle_here_doc(int ac, char **av, int *i);
+void		handle_input_file(char **av, int *i, int *fd_in);
 void		ft_check_args(int argc, char **argv);
+void		here_doc(char **av);
+void		open_fd_out(int argc, char **argv, int *fd_out);
+void		ft_error(void);
 
 #endif

@@ -6,7 +6,7 @@
 #    By: Jskehan <jskehan@student.42Berlin.de>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/21 10:13:23 by Jskehan           #+#    #+#              #
-#    Updated: 2024/02/13 13:44:39 by Jskehan          ###   ########.fr        #
+#    Updated: 2024/04/24 19:26:32 by Jskehan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,36 +14,29 @@ NAME = libft.a
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
-SRC = $(wildcard *.c)
-OBJDIR := ./obj
+SRC_DIR = src
+OBJ_DIR = ./obj
+SRC_FILES = ft_atoi.c ft_bzero.c ft_calloc.c ft_isalnum.c ft_isalpha.c ft_isascii.c ft_isdigit.c ft_isprint.c ft_itoa.c ft_lstadd_back.c ft_lstadd_front.c ft_lstclear.c ft_lstdelone.c ft_lstiter.c ft_lstlast.c ft_lstmap.c ft_lstnew.c ft_lstsize.c ft_lsttoarr.c ft_memchr.c ft_memcmp.c ft_memcpy.c ft_memmove.c ft_memset.c ft_putchar_fd.c ft_putendl_fd.c ft_putnbr_fd.c ft_putstr_fd.c ft_split.c ft_strchr.c ft_strcmp.c ft_strdup.c ft_striteri.c ft_strjoin.c ft_strlcat.c ft_strlcpy.c ft_strlen.c ft_strmapi.c ft_strncmp.c ft_strnew.c ft_strnstr.c ft_strrchr.c ft_strtrim.c ft_substr.c ft_tolower.c ft_toupper.c
+SRC = $(addprefix $(SRC_DIR)/,$(SRC_FILES))
+OBJS = $(patsubst %.c,$(OBJ_DIR)/%.o,$(SRC_FILES))
 
-# Ensure object file paths are correctly prefixed with OBJDIR
-OBJ := $(patsubst %.c,$(OBJDIR)/%.o,$(SRC))
-
-# The all target should depend on $(NAME)
 all: $(NAME)
 
-# Ensure OBJDIR exists before compiling anything
-$(NAME): $(OBJDIR) $(OBJ)
-		ar rcs $(NAME) $(OBJ)
-		ranlib $(NAME)
+$(NAME): $(OBJS)
+		ar rcs $(NAME) $(OBJS)
 
-# Rule to create OBJDIR
-$(OBJDIR):
-		mkdir -p $(OBJDIR)
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
+		$(CC) $(CFLAGS) -c -o $@ $< -I.
 
-# Rule to compile .c files into .o files within OBJDIR
-$(OBJDIR)/%.o: %.c
-		$(CC) $(CFLAGS) -c $< -o $@ -I .
+$(OBJ_DIR):
+		mkdir -p $(OBJ_DIR)
 
-# Clean only object files
 clean:
-		rm -f $(OBJDIR)/*.o
+		rm -rf $(OBJ_DIR)
 
-# Full clean including the library file and the OBJDIR
 fclean: clean
 		rm -f $(NAME)
-		rm -rf $(OBJDIR)
 
-# Rebuild everything
 re: fclean all
+
+.PHONY: all clean fclean re

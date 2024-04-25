@@ -6,7 +6,7 @@
 /*   By: Jskehan <jskehan@student.42Berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 18:19:32 by Jskehan           #+#    #+#             */
-/*   Updated: 2024/02/13 13:46:47 by Jskehan          ###   ########.fr       */
+/*   Updated: 2024/04/22 13:43:37 by Jskehan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,27 @@ void	create_line_and_update_buffer(char **buffer, char **line)
 	free(temp);
 }
 
-char	*get_next_line(int fd)
+static int	ft_strncmp(const char *s1, const char *s2, size_t n)
+{
+	unsigned char	*str1;
+	unsigned char	*str2;
+	size_t			i;
+
+	i = 0;
+	str1 = (unsigned char *)s1;
+	str2 = (unsigned char *)s2;
+	while (i < n && str1[i] && str2[i])
+	{
+		if (str1[i] != str2[i])
+			return (str1[i] - str2[i]);
+		i++;
+	}
+	if (i == n)
+		return (0);
+	return (str1[i] - str2[i]);
+}
+
+char	*get_next_line(int fd, char *delim)
 {
 	static char	*buffer = NULL;
 	char		*line;
@@ -99,5 +119,7 @@ char	*get_next_line(int fd)
 		return (NULL);
 	}
 	create_line_and_update_buffer(&buffer, &line);
+	if (!ft_strncmp(delim, line, ft_strlen(delim)))
+		free(buffer);
 	return (line);
 }

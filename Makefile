@@ -1,64 +1,68 @@
-# Compiler
-CC = cc
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: Jskehan <jskehan@student.42Berlin.de>      +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2024/04/24 19:10:25 by Jskehan           #+#    #+#              #
+#    Updated: 2024/04/24 19:20:11 by Jskehan          ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
 
-#adding GNL 
-GNL = get_next_line.c get_next_line_utils.c
-SRC_GNL = $(addprefix lib/gnl/, $(GNL))
+NAME	:= pipex
+CFLAGS	:=  -Wunreachable-code -Ofast -Wextra -Wall -Werror
+OBJ_DIR	:= ./obj
+DEBUG_FLAGS = -g
 
-# Source file directory
-SRC_DIR = src/
 
-# Source files (automatically include all .c files from SRC_DIR)
-SRC = $(wildcard $(SRC_DIR)*.c) $(SRC_GNL)
-
-# Output file
-NAME = pipex
-
-# Compiler flags
-DFLAGS = -g
-WFLAGS = -Wall -Wextra -Werror
+HEADERS	:= -I .
 
 LIBFTPRINTF_A = libftprintf.a
 LIBFTPRINTF_DIR = lib/libftprint/
 LIBFTPRINTF  = $(addprefix $(LIBFTPRINTF_DIR), $(LIBFTPRINTF_A))
+
+GNL = get_next_line.c get_next_line_utils.c
+SRC_GNL = $(addprefix lib/gnl/, $(GNL))
+SRC_FILES = main.c parser.c utils.c piping.c
+
+
+SRC = $(addprefix src/, $(SRC_FILES))
+SRCS	:= $(SRC_GNL)
+OBJS = $(patsubst %.c,$(OBJ_DIR)/%.o,$(SRC))
+OBJS += $(SRCS:%.c=$(OBJ_DIR)/%.o) 
 
 NONE='\033[0m'
 GREEN='\033[32m'
 YELLOW='\033[33m'
 GRAY='\033[2;37m'
 CURSIVE='\033[3m'
-RED='\033[31m'
 
-# Default target
 all: $(NAME)
 
-# Compile the source file
-$(NAME): $(SRC)
+$(NAME): $(OBJS)
 	@make -C $(LIBFTPRINTF_DIR) > /dev/null
-	$(CC) $(WFLAGS) -o $(NAME) $(SRC) -L$(LIBFTPRINTF_DIR) -lftprintf -I$(LIBFTPRINTF_DIR)
-	@echo -e $(CURSIVE)$(GREEN) '\t- BUILD SUCCESS!' $(NONE)
+	@$(CC) $(OBJS) $(LIBFTPRINTF) $(LIBS) $(HEADERS) -o $(NAME)
+	@@echo -e $(CURSIVE)$(GREEN) '     - SUCCESS!' $(NONE)
 
-# Clean the generated files
+$(OBJ_DIR)/%.o: %.c | $(OBJ_DIR)
+	@mkdir -p $(@D)
+	@$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS)
+
+$(OBJ_DIR):
+	@mkdir -p $(OBJ_DIR)
+
+debug: CFLAGS += $(DEBUG_FLAGS)
+debug: re
+
 clean:
-	rm -f $(NAME)
+	@rm -rf $(OBJ_DIR)
 	@make -C $(LIBFTPRINTF_DIR) clean
-	@echo -e $(CURSIVE)$(RED) '\t- CLEAN SUCCESS!' $(NONE)
 
-# Clean the generated files and the executable
 fclean: clean
+	@rm -f $(NAME)
 	@make -C $(LIBFTPRINTF_DIR) fclean
-	@echo -e $(CURSIVE)$(RED) '\t- FCLEAN SUCCESS!' $(NONE)
 
-# Rebuild the project
 re: fclean all
 
-# Build with debug symbols
-debug: WFLAGS += $(DFLAGS)
-debug: $(NAME)
-	@echo -e $(CURSIVE)$(GREEN) '    DEBUG - BUILD SUCCESS!' $(NONE)
-
-# Run valgrind with specific parameters
-valgrind:
-	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./pipex pipex.h "cat -e" "nonexistingcommand" "outfile"
-
-.PHONY: all clean fclean re debug valgrind
+.PHONY: all clean fclean re check_build_state

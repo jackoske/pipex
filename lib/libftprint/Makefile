@@ -6,7 +6,7 @@
 #    By: Jskehan <jskehan@student.42Berlin.de>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/06 17:11:12 by Jskehan           #+#    #+#              #
-#    Updated: 2023/12/06 17:11:13 by Jskehan          ###   ########.fr        #
+#    Updated: 2024/04/24 19:24:33 by Jskehan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,12 +15,16 @@
 
 NAME		= libftprintf.a
 LIBFT		= libft
-OBJ_DIR		= obj/
+
+
+OBJ_DIR		= ./obj
+SRC_DIR		= src
+
 CC			= cc
-CFLAGS		= -Wall -Werror -Wextra -I
+CFLAGS		= -Wall -Werror -Wextra
 RM			= rm -f
 AR			= ar rcs
-INCLUDE		= .
+INCLUDE		= -I.
 # Colors
 
 DEF_COLOR = \033[0;39m
@@ -34,43 +38,29 @@ CYAN = \033[0;96m
 WHITE = \033[0;97m
 
 #Sources
+SRC_FILES	= ft_printf.c ft_printf_utils.c ft_printf_unsigned.c ft_printf_hex.c
+SRC = $(addprefix $(SRC_DIR)/,$(SRC_FILES))
 
-# SRC_FILES	=	ft_printf ft_printf_utils ft_print_ptr ft_print_unsigned ft_print_hex
-SRC_FILES	=	ft_printf ft_printf_utils ft_printf_unsigned ft_printf_hex
-
-OBJ 		= 	$(addprefix $(OBJ_DIR), $(addsuffix .o, $(SRC_FILES)))
-
-
-TEST_SRC   = test_ft_printf.c
-TEST_OBJ   = $(OBJ_DIR)test_ft_printf.o
-TEST_EXEC  = test_ft_printf
+OBJS = $(patsubst %.c,$(OBJ_DIR)/%.o,$(SRC_FILES))
 
 ###
 
-OBJF		=	.cache_exists
 
 all:		$(NAME)
 
-$(NAME):	$(OBJ)
+$(NAME):	$(OBJS)
 			@make -C $(LIBFT)
 			@cp libft/libft.a .
 			@mv libft.a $(NAME)
-			@$(AR) $(NAME) $(OBJ)
+			@$(AR) $(NAME) $(OBJS)
 			@echo "$(GREEN)ft_printf compiled!$(DEF_COLOR)"
 
-$(OBJ_DIR)%.o: %.c | $(OBJF)
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 			@echo "$(YELLOW)Compiling: $< $(DEF_COLOR)"
 			@$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
 
-$(OBJF):
-			@mkdir -p $(OBJ_DIR)
-
-$(TEST_EXEC): $(NAME) $(TEST_OBJ)
-	@echo "$(YELLOW)Linking test: $@ $(DEF_COLOR)"
-	$(CC) $(CFLAGS) -c $(TEST_SRC) -o $@ -L. -lftprintf -I$(INCLUDE)
-
-test: $(NAME) $(TEST_EXEC)
-
+$(OBJ_DIR):
+		mkdir -p $(OBJ_DIR)
 
 clean:
 			@$(RM) -rf $(OBJ_DIR)
