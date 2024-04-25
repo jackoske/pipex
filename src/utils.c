@@ -6,7 +6,7 @@
 /*   By: Jskehan <jskehan@student.42Berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 13:20:58 by Jskehan           #+#    #+#             */
-/*   Updated: 2024/04/25 12:28:10 by Jskehan          ###   ########.fr       */
+/*   Updated: 2024/04/25 17:16:49 by Jskehan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,12 @@
 
 void	ft_check_args(int argc, char **argv)
 {
-	int	here_doc;
-
-	here_doc = (ft_strcmp(argv[1], "here_doc") == 0);
-	if ((argc < 5) || (here_doc && argc < 6))
+	if ((argc < 5) || ((ft_strcmp(argv[1], "here_doc") == 0) && argc < 6))
 	{
 		ft_putstr_fd("pipex: too few arguments\n", 2);
 		exit(EXIT_FAILURE);
 	}
-	if (!here_doc 
+	if (!(ft_strcmp(argv[1], "here_doc") == 0) 
 		&& ((access(argv[1], F_OK) == -1) || (access(argv[1], R_OK) == -1)))
 		ft_error();
 }

@@ -6,7 +6,7 @@
 /*   By: Jskehan <jskehan@student.42Berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 16:45:52 by Jskehan           #+#    #+#             */
-/*   Updated: 2024/04/25 12:28:09 by Jskehan          ###   ########.fr       */
+/*   Updated: 2024/04/25 16:16:26 by Jskehan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,10 +59,8 @@ void	parse_cmd(t_parser *parser, char *cmd)
 char	**split_cmd_into_parts(char *cmd)
 {
 	t_parser	parser;
-	int			i;
 	char		**parts;
 
-	i = -1;
 	initilise_parser(&parser);
 	parse_cmd(&parser, cmd);
 	if (ft_strlen(parser.part) > 0)
