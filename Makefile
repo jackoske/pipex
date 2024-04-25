@@ -6,7 +6,7 @@
 #    By: Jskehan <jskehan@student.42Berlin.de>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/24 19:10:25 by Jskehan           #+#    #+#              #
-#    Updated: 2024/04/24 19:20:11 by Jskehan          ###   ########.fr        #
+#    Updated: 2024/04/25 13:06:18 by Jskehan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,7 @@ LIBFTPRINTF  = $(addprefix $(LIBFTPRINTF_DIR), $(LIBFTPRINTF_A))
 
 GNL = get_next_line.c get_next_line_utils.c
 SRC_GNL = $(addprefix lib/gnl/, $(GNL))
-SRC_FILES = main.c parser.c utils.c piping.c
+SRC_FILES = main.c parser.c utils.c piping.c exec.c here_doc.c
 
 
 SRC = $(addprefix src/, $(SRC_FILES))

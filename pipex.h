@@ -6,7 +6,7 @@
 /*   By: Jskehan <jskehan@student.42Berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 11:59:37 by Jskehan           #+#    #+#             */
-/*   Updated: 2024/04/25 11:28:15 by Jskehan          ###   ########.fr       */
+/*   Updated: 2024/04/25 14:42:47 by Jskehan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,5 +45,7 @@ void		ft_check_args(int argc, char **argv);
 void		here_doc(char **av);
 void		open_fd_out(int argc, char **argv, int *fd_out);
 void		ft_error(void);
-
+int			execute_last_cmd(int argc, char **argv, char **env);
+pid_t		do_pipe(char *cmd, char **env);
+void		check_access(int argc, char **argv);
 #endif
